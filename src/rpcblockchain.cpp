@@ -63,6 +63,14 @@ Object blockToJSON(const CBlock& block, const CBlockIndex* blockindex)
     result.push_back(Pair("bits", HexBits(block.nBits)));
     result.push_back(Pair("difficulty", GetDifficulty(blockindex)));
 
+    // PDG: I need this data so I can peek into the raw copy of the block,
+    // which what I really wanted.
+    if(blockindex) {
+       result.push_back(Pair("disk_nFile", (uint64_t)blockindex->nFile));
+       result.push_back(Pair("disk_nBlockPos", (uint64_t)blockindex->nDataPos));
+    }
+
+
     if (blockindex->pprev)
         result.push_back(Pair("previousblockhash", blockindex->pprev->GetBlockHash().GetHex()));
     if (blockindex->pnext)

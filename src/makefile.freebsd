@@ -1,0 +1,19 @@
+# FreeBSD support, duplicates the efforts of the FreeBSD port
+#
+include makefile.unix
+
+USE_UPNP := 0
+
+# Added so Boost and Berkley DB can be found
+CXXFLAGS +=	-I/usr/local/include -I/usr/local/include/db48
+CXXFLAGS +=	-L/usr/local/lib -L/usr/local/lib/db48
+CXXFLAGS +=	-Wno-invalid-offsetof
+CXXFLAGS +=	-DBSD
+
+# remove -l dl, not required?
+LIBS := $(subst -l dl,,$(LIBS))
+
+pdg: all
+	-./bitcoind -datadir=/home/btc/test-net stop
+	#./bitcoind -datadir=/home/btc/test-net -printtoconsole -connect=0
+	./bitcoind -datadir=/home/btc/test-net -printtoconsole
